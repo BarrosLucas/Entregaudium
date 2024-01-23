@@ -1,3 +1,4 @@
+import 'package:entregaudium/model/apiresponse.dart';
 import 'package:entregaudium/model/responsedata.dart';
 import 'package:entregaudium/utils/colors.dart';
 import 'package:entregaudium/viewmodel/userdetails/userdetails_vm.dart';
@@ -43,7 +44,7 @@ class _UserDetailsState extends State<UserDetails> {
           }else if(snapshot.hasError || !snapshot.hasData){
             return Container(
               width: MediaQuery.of(context).size.width,
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -54,7 +55,7 @@ class _UserDetailsState extends State<UserDetails> {
             );
           }else{
             //Assim que lido, o dado é armazenado para que seja consumido.
-            response = viewModel.apiResponse.response;
+            response = (snapshot.data as ApiResponse).response;
             return body();
           }
         },
@@ -158,7 +159,7 @@ class _UserDetailsState extends State<UserDetails> {
     return Column(
       children: [
         Image.asset('assets/images/drawable-mdpi/ic_saldo.png'),
-        Text("R\$ ${viewModel.value.toStringAsFixed(2)}", style: TextStyle(fontSize: 22,color: white),),
+        Text("R\$ ${viewModel.value.toStringAsFixed(2).replaceAll('.', ',')}", style: TextStyle(fontSize: 22,color: white),),
         Text("Saldo", style: TextStyle(fontSize: 13,color: white),)
       ],
     );
