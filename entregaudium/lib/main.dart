@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:entregaudium/view/userscreen/UserDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'dart:ui' as ui;
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Entregaudium',
       theme: ThemeData(
         colorScheme:  ColorScheme.fromSeed(seedColor: Colors.blue),
@@ -26,6 +28,19 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Entregaudium'),
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      getPages: [
+        GetPage(
+            name: '/',
+            page: () => MyHomePage(title: 'Entregaudium')
+        ),
+        GetPage(
+            name: '/userdetails',
+            page: () => UserDetails(),
+            transition: Transition.rightToLeft,
+            transitionDuration: Duration(milliseconds: 800)
+        ),
+      ],
     );
   }
 }
@@ -76,13 +91,16 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title, style: const TextStyle(color: Colors.white),),
       ),
       body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 14.0,
-          ),
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+          target: _center,
+          zoom: 14.0,
+        ),
         markers: _markers.values.toSet(),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(child: Icon(Icons.add, color: Colors.white,),onPressed: (){
+        Get.toNamed('/userdetails');
+      },),
     );
   }
 
