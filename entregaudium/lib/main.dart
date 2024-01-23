@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:entregaudium/utils/colors.dart';
 import 'package:entregaudium/view/userscreen/UserDetails.dart';
 import 'package:entregaudium/viewmodel/userdetails/userdetails_vm.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ import 'package:provider/provider.dart';
 
 
 void main() {
+
+  //Uso de changenotifier para manter uso do provider no viewmodel.
   runApp(ChangeNotifierProvider(
     create: (context) => UserDetailsViewModel(),
     child: MyApp())
@@ -112,9 +115,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         markers: _markers.values.toSet(),
       ),
-      floatingActionButton: FloatingActionButton(child: Icon(Icons.add, color: Colors.white,),onPressed: (){
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.remove_red_eye, color: Colors.white),
+        backgroundColor: darkBlue,
+        onPressed: (){
         Get.toNamed('/userdetails');
       },),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 

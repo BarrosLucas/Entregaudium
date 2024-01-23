@@ -29,9 +29,29 @@ class _UserDetailsState extends State<UserDetails> {
         future: viewModel.fetchData(),
         builder: (context, snapshot){
           if(snapshot.connectionState == ConnectionState.waiting){
-            return Container();
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  Text("Carregando...")
+                ],
+              ),
+            );
           }else if(snapshot.hasError || !snapshot.hasData){
-            return Container();
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.warning, size: 40,),
+                  Text("Falha ao Carregar")
+                ],
+              ),
+            );
           }else{
             //Assim que lido, o dado é armazenado para que seja consumido.
             response = viewModel.apiResponse.response;
