@@ -1,5 +1,9 @@
+import 'package:entregaudium/model/apiresponse.dart';
+import 'package:entregaudium/model/responsedata.dart';
 import 'package:entregaudium/utils/colors.dart';
+import 'package:entregaudium/viewmodel/userdetails/userdetails_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 /*
@@ -13,10 +17,28 @@ class UserDetails extends StatefulWidget {
 }
 
 class _UserDetailsState extends State<UserDetails> {
+  late final viewModel;
+  ResponseData? response;
+
+
   @override
   Widget build(BuildContext context) {
+    viewModel  = Provider.of<UserDetailsViewModel>(context);
+
     return Scaffold(
-      body: body(),
+      body: FutureBuilder(
+        future: viewModel.fetchData(),
+        builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return Container();
+          }else if(snapshot.hasError || !snapshot.hasData){
+            return Container();
+          }else{
+            response = viewModel.apiResponse.response;
+            return body();
+          }
+        },
+      ),
     );
   }
 
@@ -57,8 +79,8 @@ class _UserDetailsState extends State<UserDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Augusto Prado",style: TextStyle(fontFamily: 'OpenSans', fontSize: 24, color: white)),
-          Text("Coletor",style: TextStyle(fontFamily: 'OpenSans',fontSize: 16, color: employerColor, fontWeight: FontWeight.w300))
+          Text("${response!= null? response!.nome : "Nome do usuário"}",style: TextStyle(fontFamily: 'OpenSans', fontSize: 24, color: white)),
+          Text("${response!= null? response!.cargo: "Cargo do usuário"}",style: TextStyle(fontFamily: 'OpenSans',fontSize: 16, color: employerColor, fontWeight: FontWeight.w300))
         ],
       ),
     );
@@ -79,7 +101,7 @@ class _UserDetailsState extends State<UserDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Texto do usuário", style: TextStyle(color: descriptionColor, fontSize: 15),),
+          Text("${response != null? response!.descricao : "Texto do usuário."}", style: TextStyle(color: descriptionColor, fontSize: 15),),
           Expanded(child: Container()),
           statistics()
         ],
@@ -106,7 +128,7 @@ class _UserDetailsState extends State<UserDetails> {
     return Column(
       children: [
         Image.asset('assets/images/drawable-mdpi/ic_entregas.png'),
-        Text("254", style: TextStyle(fontSize: 22,color: white),),
+        Text("${viewModel.totalDeliveries?? 0}", style: TextStyle(fontSize: 22,color: white),),
         Text("Entregas", style: TextStyle(fontSize: 13,color: white),)
       ],
     );
@@ -116,7 +138,7 @@ class _UserDetailsState extends State<UserDetails> {
     return Column(
       children: [
         Image.asset('assets/images/drawable-mdpi/ic_saldo.png'),
-        Text("R\$ 254", style: TextStyle(fontSize: 22,color: white),),
+        Text("R\$ ${viewModel.value.toStringAsFixed(2)}", style: TextStyle(fontSize: 22,color: white),),
         Text("Saldo", style: TextStyle(fontSize: 13,color: white),)
       ],
     );
@@ -126,7 +148,7 @@ class _UserDetailsState extends State<UserDetails> {
     return Column(
       children: [
         Image.asset('assets/images/drawable-mdpi/ic_nota.png'),
-        Text("4.7", style: TextStyle(fontSize: 22,color: white),),
+        Text("${viewModel.feedback?? 0}", style: TextStyle(fontSize: 22,color: white),),
         Text("Nota", style: TextStyle(fontSize: 13,color: white),)
       ],
     );

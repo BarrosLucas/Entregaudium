@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:entregaudium/view/userscreen/UserDetails.dart';
+import 'package:entregaudium/viewmodel/userdetails/userdetails_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -9,9 +10,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'dart:ui' as ui;
 
+import 'package:provider/provider.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => UserDetailsViewModel(),
+    child: MyApp())
+  );
 }
 
 class MyApp extends StatelessWidget {
