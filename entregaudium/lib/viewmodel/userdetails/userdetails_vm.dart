@@ -22,6 +22,10 @@ class UserDetailsViewModel with ChangeNotifier{
     try {
       _apiResponse = await _repository.fetchData();
 
+
+      /*
+      * Os dados são lidos e traduzidos em estatísticas usando fold, map e reduce.
+      * */
       _value = _apiResponse!.response.historico.fold(0, (sum, item) => sum! + (item.valor is int ? item.valor.toDouble() : item.valor));
       _totalDeliveries = _apiResponse!.response.historico.fold(0, (sum, item) => sum! + item.qtd);
       _feedback = _apiResponse!.response.historico.isEmpty ? 0 : _apiResponse!.response.historico.map((item) => item.avaliacao).reduce((a, b) => a + b) / _apiResponse!.response.historico.length;

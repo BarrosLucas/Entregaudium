@@ -1,4 +1,3 @@
-import 'package:entregaudium/model/apiresponse.dart';
 import 'package:entregaudium/model/responsedata.dart';
 import 'package:entregaudium/utils/colors.dart';
 import 'package:entregaudium/viewmodel/userdetails/userdetails_vm.dart';
@@ -34,6 +33,7 @@ class _UserDetailsState extends State<UserDetails> {
           }else if(snapshot.hasError || !snapshot.hasData){
             return Container();
           }else{
+            //Assim que lido, o dado é armazenado para que seja consumido.
             response = viewModel.apiResponse.response;
             return body();
           }
