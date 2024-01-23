@@ -17,7 +17,10 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  /*
+  * O MaterialApp foi substituído pelo GetMaterialApp para que o gerenciamento
+  * de páginas do aplicativo seja feito pelo Get, através de rotas.
+  * */
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -85,6 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
 
+    /*
+    * Foi incluída um FloatActionButton apenas para chamar a nova tela. Pretendo
+    * atualizar esse botão em breve, para tornar o aplicativo mais atraente.
+    * Uso o Get.toNamed para chamar a nova tela, através da rota declarada.
+    * */
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
